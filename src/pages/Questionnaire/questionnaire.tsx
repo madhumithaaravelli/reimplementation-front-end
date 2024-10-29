@@ -1,3 +1,5 @@
+// Questionnaires.tsx
+
 import React, { useState } from "react";
 import { Outlet, useNavigate } from "react-router-dom";
 import { Col, Container, Row } from "react-bootstrap";
@@ -72,21 +74,22 @@ const Questionnaires = () => {
           <Row>
             <Col>
               {currentData.map(item => (
-                <div key={item.id} style={{ border: '1px solid #ccc', margin: '5px 0', padding: '10px' }}>
-                  <span>{item.type}</span>
-                  <button onClick={() => toggleExpand(item.id)} className="button" style={{ marginLeft: '10px' }}>
+                <div key={item.id} className="parent-item">
+                  <span className="item-type">{item.type}</span>
+                  <button 
+                    onClick={() => toggleExpand(item.id)} 
+                    className="button button-expand"
+                  >
                     {expandedItems.includes(item.id) ? "Collapse" : "Expand"}
                   </button>
                   {expandedItems.includes(item.id) && item.children && (
-                    <div style={{ paddingLeft: '20px', marginTop: '10px' }}>
+                    <div className="child-container">
                       {item.children.map(child => (
-                        <div key={child.id} style={{ border: '1px solid #ccc', margin: '5px 0', padding: '10px' }}>
+                        <div key={child.id} className="child-item">
                           <strong>{child.name}</strong>
-                          {/* Only the button for editing child items */}
                           <button 
-                            onClick={() => navigate(`/edit/${child.id}`)} 
-                            className="button button-plus" 
-                            style={{ marginLeft: '10px' }}
+                            onClick={() => navigate(`/edit-questionnaire/${child.id}`)} 
+                            className="button button-plus"
                           >
                             +
                           </button>

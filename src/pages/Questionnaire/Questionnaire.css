@@ -91,3 +91,48 @@
 .pagination-button:hover {
   background-color: lightgray; /* Light gray background on hover */
 }
+
+/* Questionnaire.css */
+
+.parent-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px;
+  border: 1px solid #ccc;
+  margin: 5px 0;
+}
+
+.item-type {
+  flex-grow: 1;
+}
+
+.button-expand {
+  margin-left: 10px;
+  width: 80px; /* Fixed width for consistent alignment */
+  text-align: center;
+}
+
+.child-container {
+  padding-left: 20px;
+  margin-top: 10px;
+}
+
+.child-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px;
+  border: 1px solid #ccc;
+  margin: 5px 0;
+}
+
+.child-item strong {
+  flex-grow: 1;
+}
+
+.button-plus {
+  align-self: flex-start;
+  padding: 5px;
+  margin-left: 10px;
+}
