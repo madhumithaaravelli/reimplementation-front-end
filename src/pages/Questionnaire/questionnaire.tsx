@@ -1,6 +1,4 @@
-// Questionnaires.tsx
-
-import React, { useState } from "react";
+import React, { useState, useMemo } from "react";
 import { Outlet, useNavigate } from "react-router-dom";
 import { Col, Container, Row } from "react-bootstrap";
 import { IQuestionnaire } from "../../utils/interfaces";
@@ -15,10 +13,12 @@ const Questionnaires = () => {
   const [itemsPerPage, setItemsPerPage] = useState(10);
   const [currentPage, setCurrentPage] = useState(1);
 
-  const filteredData = data.filter(item => 
-    item.type.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    (item.children && item.children.some(child => child.name && child.name.toLowerCase().includes(searchTerm.toLowerCase())))
-  );
+  const filteredData = useMemo(() => {
+    return data.filter(item => 
+      item.type.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      (item.children && item.children.some(child => child.name && child.name.toLowerCase().includes(searchTerm.toLowerCase())))
+    );
+  }, [data, searchTerm]);
 
   const totalPages = Math.ceil(filteredData.length / itemsPerPage);
   const currentData = filteredData.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage);
@@ -29,15 +29,13 @@ const Questionnaires = () => {
     );
   };
 
-  const expandAll = () => {
-    const allIds = currentData.map(item => item.id);
-    setExpandedItems(allIds);
-  };
+  const allIds = useMemo(() => currentData.map(item => item.id), [currentData]);
 
-  const collapseAll = () => {
-    setExpandedItems([]);
-  };
+  const expandAll = () => setExpandedItems(allIds);
+  const collapseAll = () => setExpandedItems([]);
 
+  const handlePrevious = () => setCurrentPage(prev => Math.max(prev - 1, 1));
+  const handleNext = () => setCurrentPage(prev => Math.min(prev + 1, totalPages));
   const handleItemsPerPageChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     setItemsPerPage(Number(e.target.value));
     setCurrentPage(1);
@@ -65,8 +63,10 @@ const Questionnaires = () => {
                 onChange={(e) => setSearchTerm(e.target.value)}
                 style={{ marginBottom: '20px', padding: '10px' }}
               />
-              <button onClick={expandAll} className="button">Expand All</button>
-              <button onClick={collapseAll} className="button">Collapse All</button>
+              <div className="expand-collapse-buttons">
+                <button onClick={expandAll} className="button">Expand All</button>
+                <button onClick={collapseAll} className="button">Collapse All</button>
+              </div>
             </Col>
           </Row>
 
@@ -79,17 +79,18 @@ const Questionnaires = () => {
                   <button 
                     onClick={() => toggleExpand(item.id)} 
                     className="button button-expand"
+                    aria-expanded={expandedItems.includes(item.id)}
                   >
-                    {expandedItems.includes(item.id) ? "Collapse" : "Expand"}
+                    {expandedItems.includes(item.id) ? "▼" : "►"}
                   </button>
                   {expandedItems.includes(item.id) && item.children && (
                     <div className="child-container">
                       {item.children.map(child => (
                         <div key={child.id} className="child-item">
-                          <strong>{child.name}</strong>
+                          <span>{child.name}</span>
                           <button 
                             onClick={() => navigate(`/edit-questionnaire/${child.id}`)} 
-                            className="button button-plus"
+                            className="plus-button" // Use new class for plus button
                           >
                             +
                           </button>
@@ -102,32 +103,25 @@ const Questionnaires = () => {
             </Col>
           </Row>
 
-          {/* Simple Pagination Logic */}
+          {/* Pagination */}
           <Row>
             <Col className="text-center" style={{ marginTop: '20px' }}>
-              <button 
-                onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
-                disabled={currentPage === 1}
-                className="button"
-              >
+              <button onClick={handlePrevious} disabled={currentPage === 1} className="button">
                 Previous
               </button>
               <span style={{ margin: '0 10px' }}>Page {currentPage} of {totalPages}</span>
-              <button 
-                onClick={() => setCurrentPage(prev => Math.min(prev + 1, totalPages))}
-                disabled={currentPage === totalPages}
-                className="button"
-              >
+              <button onClick={handleNext} disabled={currentPage === totalPages} className="button">
                 Next
               </button>
               <select 
                 value={itemsPerPage} 
                 onChange={handleItemsPerPageChange} 
                 style={{ marginLeft: '10px', padding: '5px' }}
+                aria-label="Items per page"
               >
-                <option value={10}>1-10</option>
-                <option value={15}>10-25</option>
-                <option value={25}>25-50</option>
+                <option value={10}>10 items</option>
+                <option value={15}>15 items</option>
+                <option value={25}>25 items</option>
               </select>
             </Col>
           </Row>
