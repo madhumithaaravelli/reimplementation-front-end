@@ -7,17 +7,22 @@ import './Questionnaire.css';
 
 const Questionnaires = () => {
   const navigate = useNavigate();
-  const [questionnaireData, setData] = useState<IQuestionnaire[]>(dummyData);
+  const [questionnaireData, setQuestionnaireData] = useState<IQuestionnaire[]>(dummyData);
   const [searchTerm, setSearchTerm] = useState("");
   const [expandedItems, setExpandedItems] = useState<number[]>([]);
   const [itemsPerPage, setItemsPerPage] = useState(10);
   const [currentPage, setCurrentPage] = useState(1);
 
-  const filteredQuestionnaires = useMemo(() => {
-    return questionnaireData.filter(item => 
+  // Helper function for filtering by search term
+  const filterBySearchTerm = (item: IQuestionnaire) => {
+    return (
       item.type.toLowerCase().includes(searchTerm.toLowerCase()) ||
       (item.children && item.children.some(child => child.name && child.name.toLowerCase().includes(searchTerm.toLowerCase())))
     );
+  };
+
+  const filteredQuestionnaires = useMemo(() => {
+    return questionnaireData.filter(filterBySearchTerm);
   }, [questionnaireData, searchTerm]);
 
   const totalPages = Math.ceil(filteredQuestionnaires.length / itemsPerPage);
@@ -34,8 +39,11 @@ const Questionnaires = () => {
   const expandAll = () => setExpandedItems(allIds);
   const collapseAll = () => setExpandedItems([]);
 
-  const handlePrevious = () => setCurrentPage(prev => Math.max(prev - 1, 1));
-  const handleNext = () => setCurrentPage(prev => Math.min(prev + 1, totalPages));
+  // Unified function to handle page changes
+  const updatePage = (offset: number) => {
+    setCurrentPage(prev => Math.max(1, Math.min(prev + offset, totalPages)));
+  };
+
   const handleItemsPerPageChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     setItemsPerPage(Number(e.target.value));
     setCurrentPage(1);
@@ -90,7 +98,7 @@ const Questionnaires = () => {
                           <span>{child.name}</span>
                           <button 
                             onClick={() => navigate(`/edit-questionnaire/${child.id}`)} 
-                            className="plus-button" // Use new class for plus button
+                            className="plus-button"
                           >
                             +
                           </button>
@@ -106,11 +114,11 @@ const Questionnaires = () => {
           {/* Pagination */}
           <Row>
             <Col className="text-center" style={{ marginTop: '20px' }}>
-              <button onClick={handlePrevious} disabled={currentPage === 1} className="button">
+              <button onClick={() => updatePage(-1)} disabled={currentPage === 1} className="button">
                 Previous
               </button>
               <span style={{ margin: '0 10px' }}>Page {currentPage} of {totalPages}</span>
-              <button onClick={handleNext} disabled={currentPage === totalPages} className="button">
+              <button onClick={() => updatePage(1)} disabled={currentPage === totalPages} className="button">
                 Next
               </button>
               <select 
