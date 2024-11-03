@@ -7,21 +7,21 @@ import './Questionnaire.css';
 
 const Questionnaires = () => {
   const navigate = useNavigate();
-  const [data, setData] = useState<IQuestionnaire[]>(dummyData);
+  const [questionnaireData, setData] = useState<IQuestionnaire[]>(dummyData);
   const [searchTerm, setSearchTerm] = useState("");
   const [expandedItems, setExpandedItems] = useState<number[]>([]);
   const [itemsPerPage, setItemsPerPage] = useState(10);
   const [currentPage, setCurrentPage] = useState(1);
 
-  const filteredData = useMemo(() => {
-    return data.filter(item => 
+  const filteredQuestionnaires = useMemo(() => {
+    return questionnaireData.filter(item => 
       item.type.toLowerCase().includes(searchTerm.toLowerCase()) ||
       (item.children && item.children.some(child => child.name && child.name.toLowerCase().includes(searchTerm.toLowerCase())))
     );
-  }, [data, searchTerm]);
+  }, [questionnaireData, searchTerm]);
 
-  const totalPages = Math.ceil(filteredData.length / itemsPerPage);
-  const currentData = filteredData.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage);
+  const totalPages = Math.ceil(filteredQuestionnaires.length / itemsPerPage);
+  const currentData = filteredQuestionnaires.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage);
 
   const toggleExpand = (id: number) => {
     setExpandedItems(prev => 

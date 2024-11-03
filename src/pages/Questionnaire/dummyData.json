@@ -3,26 +3,26 @@
     "id": 1,
     "type": "Review-Related",
     "children": [
-      { "id": 2, "type": "Review", "name": "ReviewQuestionnaire", "creationDate": "2023-02-05", "updatedDate": "2023-02-10" },
-      { "id": 3, "type": "Review", "name": "MetareviewQuestionnaire", "creationDate": "2023-02-05", "updatedDate": "2023-02-10" },
-      { "id": 4, "type": "Review", "name": "AuthorFeedbackQuestionnaire", "creationDate": "2023-02-05", "updatedDate": "2023-02-10" },
-      { "id": 5, "type": "Review", "name": "TeammateReviewQuestionnaire", "creationDate": "2023-02-05", "updatedDate": "2023-02-10" }
+      { "id": 2, "type": "Review", "name": "Review Questionnaire", "creationDate": "2023-02-05", "updatedDate": "2023-02-10" },
+      { "id": 3, "type": "Review", "name": "Metareview Questionnaire", "creationDate": "2023-02-05", "updatedDate": "2023-02-10" },
+      { "id": 4, "type": "Review", "name": "Author Feedback Questionnaire", "creationDate": "2023-02-05", "updatedDate": "2023-02-10" },
+      { "id": 5, "type": "Review", "name": "Teammate Review Questionnaire", "creationDate": "2023-02-05", "updatedDate": "2023-02-10" }
     ]
   },
   {
     "id": 6,
     "type": "Survey-Related",
     "children": [
-      { "id": 7, "type": "Survey", "name": "AssignmentSurveyQuestionnaire", "creationDate": "2023-02-05", "updatedDate": "2023-02-10" },
-      { "id": 8, "type": "Survey", "name": "GlobalSurveyQuestionnaire", "creationDate": "2023-02-05", "updatedDate": "2023-02-10" },
-      { "id": 9, "type": "Survey", "name": "CourseSurveyQuestionnaire", "creationDate": "2023-02-05", "updatedDate": "2023-02-10" }
+      { "id": 7, "type": "Survey", "name": "Assignment Survey Questionnaire", "creationDate": "2023-02-05", "updatedDate": "2023-02-10" },
+      { "id": 8, "type": "Survey", "name": "Global Survey Questionnaire", "creationDate": "2023-02-05", "updatedDate": "2023-02-10" },
+      { "id": 9, "type": "Survey", "name": "Course Survey Questionnaire", "creationDate": "2023-02-05", "updatedDate": "2023-02-10" }
     ]
   },
   {
     "id": 10,
     "type": "Specialized",
     "children": [
-      { "id": 11, "type": "Specialized", "name": "BookmarkRatingQuestionnaire", "creationDate": "2023-02-05", "updatedDate": "2023-02-10" }
+      { "id": 11, "type": "Specialized", "name": "Bookmark Rating Questionnaire", "creationDate": "2023-02-05", "updatedDate": "2023-02-10" }
     ]
   }
 ]

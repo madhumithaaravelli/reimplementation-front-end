@@ -5,7 +5,7 @@ import { IQuestionnaire } from "../../utils/interfaces";
 
 const columnHelper = createColumnHelper<IQuestionnaire>();
 
-export const questionnaireColumns = (handlePlus: (parentId: number) => void) => [
+export const questionnaireColumns = (handleAddQuestionnaire: (parentId: number) => void) => [
   columnHelper.accessor("id", {
     header: "Id",
     enableSorting: false,
@@ -32,7 +32,7 @@ export const questionnaireColumns = (handlePlus: (parentId: number) => void) => 
             size="sm"
             variant="outline-success"
             className="ms-2"
-            onClick={() => handlePlus(row.original.id!)} 
+            onClick={() => handleAddQuestionnaire(row.original.id!)} 
           >
             <Add />
           </Button>
