@@ -3,6 +3,7 @@ import { Outlet, useNavigate } from "react-router-dom";
 import { Col, Container, Row } from "react-bootstrap";
 import { IQuestionnaire } from "../../utils/interfaces";
 import dummyData from './dummyData.json';
+import Pagination from '../../components/Table/Pagination';
 import './Questionnaire.css';
 
 const Questionnaires = () => {
@@ -13,7 +14,6 @@ const Questionnaires = () => {
   const [itemsPerPage, setItemsPerPage] = useState(10);
   const [currentPage, setCurrentPage] = useState(1);
 
-  // Helper function for filtering by search term
   const filterBySearchTerm = (item: IQuestionnaire) => {
     return (
       item.type.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -39,16 +39,6 @@ const Questionnaires = () => {
   const expandAll = () => setExpandedItems(allIds);
   const collapseAll = () => setExpandedItems([]);
 
-  // Unified function to handle page changes
-  const updatePage = (offset: number) => {
-    setCurrentPage(prev => Math.max(1, Math.min(prev + offset, totalPages)));
-  };
-
-  const handleItemsPerPageChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    setItemsPerPage(Number(e.target.value));
-    setCurrentPage(1);
-  };
-
   return (
     <>
       <Outlet />
@@ -61,7 +51,6 @@ const Questionnaires = () => {
             <hr />
           </Row>
 
-          {/* Search Bar */}
           <Row>
             <Col>
               <input 
@@ -78,7 +67,6 @@ const Questionnaires = () => {
             </Col>
           </Row>
 
-          {/* Parent List */}
           <Row>
             <Col>
               {currentData.map(item => (
@@ -111,26 +99,42 @@ const Questionnaires = () => {
             </Col>
           </Row>
 
-          {/* Pagination */}
           <Row>
             <Col className="text-center" style={{ marginTop: '20px' }}>
-              <button onClick={() => updatePage(-1)} disabled={currentPage === 1} className="button">
-                Previous
-              </button>
-              <span style={{ margin: '0 10px' }}>Page {currentPage} of {totalPages}</span>
-              <button onClick={() => updatePage(1)} disabled={currentPage === totalPages} className="button">
-                Next
-              </button>
-              <select 
-                value={itemsPerPage} 
-                onChange={handleItemsPerPageChange} 
-                style={{ marginLeft: '10px', padding: '5px' }}
-                aria-label="Items per page"
-              >
-                <option value={10}>10 items</option>
-                <option value={15}>15 items</option>
-                <option value={25}>25 items</option>
-              </select>
+              <Pagination
+                nextPage={() => setCurrentPage(prev => Math.min(prev + 1, totalPages))}
+                previousPage={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
+                canNextPage={() => currentPage < totalPages}
+                canPreviousPage={() => currentPage > 1}
+                setPageIndex={setCurrentPage}
+                setPageSize={setItemsPerPage}
+                getPageCount={() => totalPages}
+                getState={() => ({
+                  pagination: {
+                    pageIndex: currentPage - 1,
+                    pageSize: itemsPerPage,
+                  },
+                  columnFilters: [],
+                  globalFilter: "",
+                  sorting: [],
+                  expanded: {},
+                  columnVisibility: {},
+                  columnOrder: [],
+                  columnPinning: {},
+                  rowPinning: {},
+                  grouping: [],
+                  columnSizing: {}, 
+                  columnSizingInfo: {
+                    columnSizingStart: [], 
+                    deltaOffset: 0,
+                    deltaPercentage: 0,
+                    isResizingColumn: false,
+                    startOffset: 0, 
+                    startSize: 0,  
+                  },
+                  rowSelection: {},
+                })}                
+              />
             </Col>
           </Row>
         </Container>
