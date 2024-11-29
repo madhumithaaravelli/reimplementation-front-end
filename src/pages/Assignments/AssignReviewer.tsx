@@ -114,12 +114,12 @@ const AssignReviewer: React.FC = () => {
                     <div key={idx}>
                       {reviewer.name} - Review Status: {reviewer.status}
                       {reviewer.status === "Submitted" && (
-                        <button
-                          className="unsubmit-button"
+                        <span
+                          className="unsubmit-link"
                           onClick={() => handleUnsubmit(row.topic, reviewer.name)}
                         >
-                          Unsubmit
-                        </button>
+                          {" ("}Unsubmit{")"}
+                        </span>
                       )}
                     </div>
                   ))

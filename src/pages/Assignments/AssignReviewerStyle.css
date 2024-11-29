@@ -40,9 +40,14 @@
     background-color: green;
   }
   
-  .unsubmit-button {
-    background-color: grey;
-    margin-left: 10px;
+  .unsubmit-link {
+    color: #007bff;
+    cursor: pointer;
+    text-decoration: underline;
+  }
+  
+  .unsubmit-link:hover {
+    color: #0056b3;
   }
   
   .submit-button {
