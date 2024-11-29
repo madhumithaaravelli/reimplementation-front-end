@@ -1,127 +1,175 @@
-import React, { useState, useMemo } from 'react';
-import { Button, Container } from 'react-bootstrap';
-import { useLoaderData } from 'react-router-dom';
-import Table from "components/Table/Table";
-import { createColumnHelper } from "@tanstack/react-table";
+import React, { useState } from "react";
+import './AssignReviewerStyle.css'; // Import the external CSS
 
-interface IReviewerAssignment {
-  topic: string;
-  contributor: string;
-  reviewers: string[]; // Allow multiple reviewers
+interface Reviewer {
+  name: string;
+  status: string;
 }
 
-const columnHelper = createColumnHelper<IReviewerAssignment>();
+interface RowData {
+  topic: string;
+  contributors: string[];  // Allow multiple contributors
+  reviewers: Reviewer[];
+}
+
+const data: RowData[] = [
+  {
+    topic: "Topic A",
+    contributors: ["Alice"],
+    reviewers: [
+      { name: "user1", status: "Submitted" },
+    ],
+  },
+  {
+    topic: "Topic B",
+    contributors: ["Bob", "Eve"],  // Multiple contributors
+    reviewers: [
+      { name: "user2", status: "Pending" },
+      { name: "user3", status: "Submitted" },
+    ],
+  },
+  {
+    topic: "Topic C",
+    contributors: ["Charlie"],  // Single contributor
+    reviewers: [],
+  },
+];
 
 const AssignReviewer: React.FC = () => {
-  const assignment: any = useLoaderData();
+  const [modalOpen, setModalOpen] = useState<boolean>(false);
+  const [selectedTopic, setSelectedTopic] = useState<string>("");
+  const [selectedContributors, setSelectedContributors] = useState<string[]>([]);
+  const [reviewerName, setReviewerName] = useState<string>("");
+  const [tableData, setTableData] = useState<RowData[]>(data);
 
-  // Dummy data for table
-  const [data, setData] = useState<IReviewerAssignment[]>([
-    { topic: 'Topic A', contributor: 'Alice', reviewers: ['Reviewer 1'] },
-    { topic: 'Topic B', contributor: 'Bob', reviewers: ['Reviewer 2', 'Reviewer 3'] },
-    { topic: 'Topic C', contributor: 'Charlie', reviewers: [] },
-  ]);
-
-  const addReviewer = (topic: string) => {
-    setData(prevData =>
-      prevData.map(row =>
-        row.topic === topic && row.reviewers.length < 3
-          ? { ...row, reviewers: [...row.reviewers, `Reviewer ${row.reviewers.length + 1}`] }
-          : row
-      )
-    );
+  const openModal = (topic: string, contributors: string[]) => {
+    setSelectedTopic(topic);
+    setSelectedContributors(contributors);
+    setModalOpen(true);
   };
 
-  const deleteReviewer = (topic: string, reviewer: string) => {
-    setData(prevData =>
-      prevData.map(row =>
+  const closeModal = () => {
+    setModalOpen(false);
+    setReviewerName("");
+  };
+
+  const handleAddReviewer = () => {
+    if (reviewerName.trim()) {
+      setTableData((prevData) =>
+        prevData.map((row) =>
+          row.topic === selectedTopic
+            ? {
+                ...row,
+                reviewers: [
+                  ...row.reviewers,
+                  { name: reviewerName, status: "Pending" },
+                ],
+              }
+            : row
+        )
+      );
+      closeModal();
+    }
+  };
+
+  const handleUnsubmit = (topic: string, reviewerName: string) => {
+    setTableData((prevData) =>
+      prevData.map((row) =>
         row.topic === topic
-          ? { ...row, reviewers: row.reviewers.filter(r => r !== reviewer) }
+          ? {
+              ...row,
+              reviewers: row.reviewers.map((reviewer) =>
+                reviewer.name === reviewerName
+                  ? { ...reviewer, status: "Pending" }
+                  : reviewer
+              ),
+            }
           : row
       )
     );
   };
-
-  const unsubmitReviewer = (topic: string, reviewer: string) => {
-    console.log(`Unsubmitted ${reviewer} for topic ${topic}`);
-    // Logic for unsubmitting a reviewer can be added here
-  };
-
-  const columns = useMemo(() => [
-    columnHelper.accessor('topic', {
-      header: 'Topic Selected',
-      cell: info => info.getValue()
-    }),
-    columnHelper.accessor('contributor', {
-      header: 'Contributor',
-      cell: info => info.getValue()
-    }),
-    columnHelper.accessor('reviewers', {
-      header: 'Reviewed By',
-      cell: info => {
-        const { reviewers } = info.row.original;
-        const topic = info.row.original.topic;
-
-        return (
-          <div style={{ textAlign: 'center' }}>
-            {/* Display Reviewers */}
-            {reviewers.map((reviewer, index) => (
-              <div key={index} style={{ marginBottom: '5px' }}>
-                {reviewer}
-                <Button
-                  variant="outline-danger"
-                  size="sm"
-                  style={{ marginLeft: '10px' }}
-                  onClick={() => deleteReviewer(topic, reviewer)}
-                >
-                  Delete
-                </Button>
-                <Button
-                  variant="outline-warning"
-                  size="sm"
-                  style={{ marginLeft: '5px' }}
-                  onClick={() => unsubmitReviewer(topic, reviewer)}
-                >
-                  Unsubmit
-                </Button>
-              </div>
-            ))}
-
-            {/* Add Reviewer Button (Visible only if less than 3 reviewers) */}
-            {reviewers.length < 3 && (
-              <Button
-                variant="outline-success"
-                size="sm"
-                style={{ marginTop: '10px' }}
-                onClick={() => addReviewer(topic)}
-              >
-                Add Reviewer
-              </Button>
-            )}
-          </div>
-        );
-      }
-    }),
-  ], [data]);
 
   return (
-    <Container className="d-flex justify-content-center align-items-center" style={{ minHeight: '100vh' }}>
-      <div style={{ width: '80%' }}>
-        <h1 className="text-center mb-4">Assign Reviewer - {assignment.name}</h1>
-        <Table
-          data={data}
-          columns={columns}
-          columnVisibility={{
-            id: false,
-          }}
-        />
-        <div className="text-right mt-3">
-          <Button variant="outline-success" onClick={() => console.log('Reviewers assigned')}>
-            Assign
-          </Button>
+    <div className="assign-reviewer-container">
+      <h1>Assign Reviewer</h1>
+      <table className="assign-reviewer-table">
+        <thead>
+          <tr>
+            <th>Topic Selected</th>
+            <th>Contributors</th>
+            <th>Reviewed By</th>
+            <th>Add Reviewer</th>
+          </tr>
+        </thead>
+        <tbody>
+          {tableData.map((row, index) => (
+            <tr key={index}>
+              <td>{row.topic}</td>
+              <td>
+                {row.contributors.join(", ")}  {/* Display contributors */}
+              </td>
+              <td>
+                {row.reviewers.length > 0 ? (
+                  row.reviewers.map((reviewer, idx) => (
+                    <div key={idx}>
+                      {reviewer.name} - Review Status: {reviewer.status}
+                      {reviewer.status === "Submitted" && (
+                        <button
+                          className="unsubmit-button"
+                          onClick={() => handleUnsubmit(row.topic, reviewer.name)}
+                        >
+                          Unsubmit
+                        </button>
+                      )}
+                    </div>
+                  ))
+                ) : (
+                  <span>No reviewers assigned</span>
+                )}
+              </td>
+              <td>
+                <button
+                  className="add-reviewer-button"
+                  onClick={() => openModal(row.topic, row.contributors)}
+                >
+                  Add Reviewer
+                </button>
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+
+      {/* Modal for adding a reviewer */}
+      {modalOpen && (
+        <div className="modal-overlay">
+          <div className="modal-content">
+            <h3>Add Reviewer</h3>
+            <p>Topic: {selectedTopic}</p>
+            <p>Contributors: {selectedContributors.join(", ")}</p>
+            <input
+              type="text"
+              placeholder="Enter user login"
+              value={reviewerName}
+              onChange={(e) => setReviewerName(e.target.value)}
+              className="input-field"
+            />
+            <button
+              onClick={handleAddReviewer}
+              className="submit-button"
+            >
+              Add Reviewer
+            </button>
+            <button
+              onClick={closeModal}
+              className="cancel-button"
+            >
+              Cancel
+            </button>
+          </div>
         </div>
-      </div>
-    </Container>
+      )}
+    </div>
   );
 };
 
