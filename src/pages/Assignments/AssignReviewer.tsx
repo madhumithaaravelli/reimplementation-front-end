@@ -22,8 +22,8 @@ const data: RowData[] = [
   {
     topic: "E2450. Refactor assignments_controller.rb",
     contributors: [
-      { name: "Alice", username: "alice123" },
-      { name: "Bob", username: "bob456" },
+      { name: "Alice anna", username: "alice123" },
+      { name: "Bob sam", username: "bob456" },
     ],
     reviewers: [
       { name: "User1", username: "username1", status: "Submitted" },
@@ -32,8 +32,8 @@ const data: RowData[] = [
   {
     topic: "E2451. Reimplement feedback_response_map.rb",
     contributors: [ 
-      { name: "Bob", username: "bob123" },
-      { name: "Eve", username: "eve123"}
+      { name: "Bob sam", username: "bob123" },
+      { name: "Eve wesley", username: "eve123"}
     ],  // Multiple contributors
     reviewers: [
       { name: "user2", username: "username2", status: "Pending" },
@@ -42,15 +42,15 @@ const data: RowData[] = [
   },
   {
     topic: "E2452. Refactor review_mapping_controller.rb",
-    contributors: [{name: "Charlie", username: "charlie123"}],  // Single contributor
+    contributors: [{name: "Charlie boo", username: "charlie123"}],  // Single contributor
     reviewers: [],
   },
   {
     topic: "E2458. User management and users table",
     contributors: [
-      { name: "Harley", username: "harley123" },
-      { name: "Javed", username: "javed1234" },
-      { name: "Leo", username: "leo123" }
+      { name: "Harley jad", username: "harley123" },
+      { name: "Javed son", username: "javed1234" },
+      { name: "Leo mee", username: "leo123" }
     ],  // Multiple contributors
     reviewers: [
       { name: "user2", username: "username2", status: "Pending" },
@@ -60,8 +60,8 @@ const data: RowData[] = [
   {
     topic: "E2467. UI for View Submissions",
     contributors: [
-      {name: "Shadow", username: "shadow123" },
-      {name: "Bradon", username: "bradon123" }
+      {name: "Shadow box", username: "shadow123" },
+      {name: "Bradon kin", username: "bradon123" }
     ],  // Multiple contributors
     reviewers: [
       { name: "user2", username: "username2", status: "Pending" },

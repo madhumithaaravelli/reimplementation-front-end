@@ -23,7 +23,7 @@
   .assign-reviewer-table td div {
     margin-bottom: 5px; /* Adds spacing between lines */
   }
-  
+
   .assign-reviewer-table th {
     background-color: #f4f4f4;
   }
@@ -51,7 +51,7 @@
   }
   
   .unsubmit-link:hover {
-    color: #0056b3;
+    color: green;
   }
   
   .submit-button {
