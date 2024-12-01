@@ -15,9 +15,13 @@
   
   .assign-reviewer-table th,
   .assign-reviewer-table td {
+    vertical-align: top;
     padding: 10px;
     text-align: left;
     border: 1px solid #ddd;
+  }
+  .assign-reviewer-table td div {
+    margin-bottom: 5px; /* Adds spacing between lines */
   }
   
   .assign-reviewer-table th {
