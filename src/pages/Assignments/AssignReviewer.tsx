@@ -3,6 +3,7 @@ import './AssignReviewerStyle.css';
 
 interface Reviewer {
   name: string;
+  username: string;
   status: string;
 }
 
@@ -25,7 +26,7 @@ const data: RowData[] = [
       { name: "Bob", username: "bob456" },
     ],
     reviewers: [
-      { name: "user1", status: "Submitted" },
+      { name: "User1", username: "username1", status: "Submitted" },
     ],
   },
   {
@@ -35,8 +36,8 @@ const data: RowData[] = [
       { name: "Eve", username: "eve123"}
     ],  // Multiple contributors
     reviewers: [
-      { name: "user2", status: "Pending" },
-      { name: "user3", status: "Submitted" },
+      { name: "user2", username: "username2", status: "Pending" },
+      { name: "user3", username: "username3", status: "Submitted" },
     ],
   },
   {
@@ -52,8 +53,8 @@ const data: RowData[] = [
       { name: "Leo", username: "leo123" }
     ],  // Multiple contributors
     reviewers: [
-      { name: "user2", status: "Pending" },
-      { name: "user3", status: "Submitted" },
+      { name: "user2", username: "username2", status: "Pending" },
+      { name: "user3", username: "username3", status: "Submitted" },
     ],
   },
   {
@@ -63,8 +64,8 @@ const data: RowData[] = [
       {name: "Bradon", username: "bradon123" }
     ],  // Multiple contributors
     reviewers: [
-      { name: "user2", status: "Pending" },
-      { name: "user3", status: "Submitted" },
+      { name: "user2", username: "username2", status: "Pending" },
+      { name: "user3", username: "username3", status: "Submitted" },
     ],
   }
 ];
@@ -74,6 +75,7 @@ const AssignReviewer: React.FC = () => {
   const [selectedTopic, setSelectedTopic] = useState<string>("");
   const [selectedContributors, setSelectedContributors] = useState<string[]>([]);
   const [reviewerName, setReviewerName] = useState<string>("");
+  const [reviewerUsername, setReviewerUsername] = useState<string>("");
   const [tableData, setTableData] = useState<RowData[]>(data);
 
   const openModal = (topic: string, contributors: IContributor[]) => {
@@ -99,7 +101,7 @@ const AssignReviewer: React.FC = () => {
                 ...row,
                 reviewers: [
                   ...row.reviewers,
-                  { name: reviewerName, status: "Pending" },
+                  { name: reviewerName, username: reviewerUsername, status: "Pending" },
                 ],
               }
             : row
@@ -154,7 +156,7 @@ const AssignReviewer: React.FC = () => {
                 {row.reviewers.length > 0 ? (
                   row.reviewers.map((reviewer, idx) => (
                     <div key={idx}>
-                      {reviewer.name} - Review status: {reviewer.status}
+                      {reviewer.name} ({reviewer.username}) - Review status: {reviewer.status}
                       {reviewer.status === "Submitted" && (
                         <span
                           className="unsubmit-link"
@@ -192,9 +194,16 @@ const AssignReviewer: React.FC = () => {
             <p>Contributors: {selectedContributors.join(", ")}</p>
             <input
               type="text"
-              placeholder="Enter user login"
+              placeholder="Enter user login (unityId)"
               value={reviewerName}
               onChange={(e) => setReviewerName(e.target.value)}
+              className="input-field"
+            />
+            <input
+              type="text"
+              placeholder="Enter reviewer name"
+              value={reviewerUsername}
+              onChange={(e) => setReviewerUsername(e.target.value)}
               className="input-field"
             />
             <button
