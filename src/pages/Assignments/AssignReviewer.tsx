@@ -18,6 +18,7 @@ interface RowData {
   reviewers: Reviewer[];
 }
 
+//Initial data for the table
 const data: RowData[] = [
   {
     topic: "E2450. Refactor assignments_controller.rb",
@@ -71,42 +72,33 @@ const data: RowData[] = [
 ];
 
 const AssignReviewer: React.FC = () => {
-  // Modal state to control visibility of the modal
+  // State variables for modal, selected topic, contributors, and inputs
   const [modalOpen, setModalOpen] = useState<boolean>(false);
-
-  // Selected topic for the reviewer assignment
   const [selectedTopic, setSelectedTopic] = useState<string>("");
-
-  // List of selected contributors for the modal display
   const [selectedContributors, setSelectedContributors] = useState<string[]>([]);
-
-  // State variables for reviewer name and username input
   const [reviewerName, setReviewerName] = useState<string>("");
   const [reviewerUsername, setReviewerUsername] = useState<string>("");
-
-  // Table data containing topics, contributors, and reviewers
   const [tableData, setTableData] = useState<RowData[]>(data);
 
-  // Opens the modal to add a reviewer and displays contributors
+  // Opens a pop up window to assign a reviewer, populating topic and contributors
   const openModal = (topic: string, contributors: IContributor[]) => {
-    // Prepare the list of contributors in the format: Name (Username)
     const contributorDetails = contributors.map(
       (contributor) => `${contributor.name} (${contributor.username})`
     );
 
-    // Set the selected topic and contributors
     setSelectedTopic(topic);
     setSelectedContributors(contributorDetails);
     setModalOpen(true);
   };
 
-  // Closes the modal and clears the reviewer name
+  // Closes the pop up window and clears the reviewer name and username
   const closeModal = () => {
     setModalOpen(false);
-    setReviewerName(""); // Reset the reviewer name
+    setReviewerName(""); 
+    setReviewerUsername("")
   };
 
-  // Adds a new reviewer to the selected topic
+  // Adds a new reviewer to the selected topic in the table
   const handleAddReviewer = () => {
     if (reviewerName.trim()) {
       setTableData((prevData) =>
@@ -126,7 +118,7 @@ const AssignReviewer: React.FC = () => {
     }
   };
 
-  // Changes the status of a reviewer from "Submitted" to "Pending"
+  // Changes a reviewer’s status to "Pending" when "Unsubmit" is clicked
   const handleUnsubmit = (topic: string, reviewerName: string) => {
     setTableData((prevData) =>
       prevData.map((row) =>
