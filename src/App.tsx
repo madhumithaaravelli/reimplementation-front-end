@@ -66,6 +66,8 @@ function App() {
         },
 
         {
+          //path to be updated as below once create assignments page is completed
+          //"assignments/edit/:id/assignreviewer"
           path: "assignments/edit/assignreviewer",
           element: <AssignReviewer />,
           loader: loadAssignment,

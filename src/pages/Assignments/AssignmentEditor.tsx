@@ -181,7 +181,9 @@ const AssignmentEditor: React.FC<IEditor> = ({ mode }) => {
                 <FontAwesomeIcon icon={faUsers} className="icon" />
                 <span>Create Teams</span>
               </div>
-
+               {/*  Line 187 To be updated as below once create assignments page is completed         
+               
+               <div className="custom-tab-button" onClick={() => navigate(`/assignments/edit/${assignmentData.id}/assignreviewer`)}> */}
               <div className="custom-tab-button" onClick={() => navigate(`/assignments/edit/assignreviewer`)}>
                 <FontAwesomeIcon icon={faUserCheck} className="icon" />
                 <span>Assign Reviewer</span>

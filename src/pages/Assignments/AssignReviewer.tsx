@@ -71,27 +71,42 @@ const data: RowData[] = [
 ];
 
 const AssignReviewer: React.FC = () => {
+  // Modal state to control visibility of the modal
   const [modalOpen, setModalOpen] = useState<boolean>(false);
+
+  // Selected topic for the reviewer assignment
   const [selectedTopic, setSelectedTopic] = useState<string>("");
+
+  // List of selected contributors for the modal display
   const [selectedContributors, setSelectedContributors] = useState<string[]>([]);
+
+  // State variables for reviewer name and username input
   const [reviewerName, setReviewerName] = useState<string>("");
   const [reviewerUsername, setReviewerUsername] = useState<string>("");
+
+  // Table data containing topics, contributors, and reviewers
   const [tableData, setTableData] = useState<RowData[]>(data);
 
+  // Opens the modal to add a reviewer and displays contributors
   const openModal = (topic: string, contributors: IContributor[]) => {
+    // Prepare the list of contributors in the format: Name (Username)
     const contributorDetails = contributors.map(
       (contributor) => `${contributor.name} (${contributor.username})`
     );
+
+    // Set the selected topic and contributors
     setSelectedTopic(topic);
     setSelectedContributors(contributorDetails);
     setModalOpen(true);
   };
 
+  // Closes the modal and clears the reviewer name
   const closeModal = () => {
     setModalOpen(false);
-    setReviewerName("");
+    setReviewerName(""); // Reset the reviewer name
   };
 
+  // Adds a new reviewer to the selected topic
   const handleAddReviewer = () => {
     if (reviewerName.trim()) {
       setTableData((prevData) =>
@@ -111,6 +126,7 @@ const AssignReviewer: React.FC = () => {
     }
   };
 
+  // Changes the status of a reviewer from "Submitted" to "Pending"
   const handleUnsubmit = (topic: string, reviewerName: string) => {
     setTableData((prevData) =>
       prevData.map((row) =>
@@ -146,6 +162,7 @@ const AssignReviewer: React.FC = () => {
             <tr key={index}>
               <td>{row.topic}</td>
               <td>
+              {/* Rendering contributors list */}
               {row.contributors.map((contributor, idx) => (
                 <div key={idx}>
                   {contributor.name} ({contributor.username})
@@ -153,6 +170,7 @@ const AssignReviewer: React.FC = () => {
               ))}
               </td>
               <td>
+                {/* Rendering reviewers and their statuses */}
                 {row.reviewers.length > 0 ? (
                   row.reviewers.map((reviewer, idx) => (
                     <div key={idx}>
@@ -172,6 +190,7 @@ const AssignReviewer: React.FC = () => {
                 )}
               </td>
               <td>
+                {/* Button to add reviewer, triggers modal */}
                 <button
                   /*Styling of this button will be updated in future */
                   className="add-reviewer-button"
