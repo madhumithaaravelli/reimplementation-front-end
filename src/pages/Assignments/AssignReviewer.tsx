@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import './AssignReviewerStyle.css'; 
+import initialData from "./DummyData.json";
 
 interface Reviewer {
   name: string;
@@ -19,57 +20,7 @@ interface RowData {
 }
 
 //Initial data for the table
-const data: RowData[] = [
-  {
-    topic: "E2450. Refactor assignments_controller.rb",
-    contributors: [
-      { name: "Alice anna", username: "alice123" },
-      { name: "Bob sam", username: "bob456" },
-    ],
-    reviewers: [
-      { name: "User1", username: "username1", status: "Submitted" },
-    ],
-  },
-  {
-    topic: "E2451. Reimplement feedback_response_map.rb",
-    contributors: [ 
-      { name: "Bob sam", username: "bob123" },
-      { name: "Eve wesley", username: "eve123"}
-    ],  // Multiple contributors
-    reviewers: [
-      { name: "user2", username: "username2", status: "Pending" },
-      { name: "user3", username: "username3", status: "Submitted" },
-    ],
-  },
-  {
-    topic: "E2452. Refactor review_mapping_controller.rb",
-    contributors: [{name: "Charlie boo", username: "charlie123"}],  // Single contributor
-    reviewers: [],
-  },
-  {
-    topic: "E2458. User management and users table",
-    contributors: [
-      { name: "Harley jad", username: "harley123" },
-      { name: "Javed son", username: "javed1234" },
-      { name: "Leo mee", username: "leo123" }
-    ],  // Multiple contributors
-    reviewers: [
-      { name: "user2", username: "username2", status: "Pending" },
-      { name: "user3", username: "username3", status: "Submitted" },
-    ],
-  },
-  {
-    topic: "E2467. UI for View Submissions",
-    contributors: [
-      {name: "Shadow box", username: "shadow123" },
-      {name: "Bradon kin", username: "bradon123" }
-    ],  // Multiple contributors
-    reviewers: [
-      { name: "user2", username: "username2", status: "Pending" },
-      { name: "user3", username: "username3", status: "Submitted" },
-    ],
-  }
-];
+const data: RowData[] = initialData as RowData[];
 
 const AssignReviewer: React.FC = () => {
   // State variables for modal, selected topic, contributors, and inputs

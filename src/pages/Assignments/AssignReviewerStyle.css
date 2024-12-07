@@ -47,7 +47,6 @@
   .unsubmit-link {
     color: #007bff;
     cursor: pointer;
-    text-decoration: underline;
   }
   
   .unsubmit-link:hover {
